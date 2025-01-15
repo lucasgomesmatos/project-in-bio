@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+import { Red_Hat_Display } from "next/font/google";
+
+const redHatDisplay = Red_Hat_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+})
 
 export const metadata: Metadata = {
   title: {
@@ -16,9 +22,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body
-        className={` antialiased`}
+        className={`${redHatDisplay.className} antialiased bg-background-primary h-screen text-content-body`}
       >
         {children}
       </body>
