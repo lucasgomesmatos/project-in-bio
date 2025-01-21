@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import './globals.css'
 
-import { Red_Hat_Display } from "next/font/google";
+import type { Metadata } from 'next'
+import { Red_Hat_Display as redHatDisplayFont } from 'next/font/google'
 
-const redHatDisplay = Red_Hat_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
+const redHatDisplay = redHatDisplayFont({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
 })
 
 export const metadata: Metadata = {
@@ -15,11 +15,10 @@ export const metadata: Metadata = {
   },
 }
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="pt-BR">
@@ -29,5 +28,5 @@ export default function RootLayout({
         {children}
       </body>
     </html>
-  );
+  )
 }

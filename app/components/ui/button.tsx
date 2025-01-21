@@ -1,6 +1,7 @@
 import { ComponentProps } from 'react'
-import type { VariantProps } from 'tailwind-variants'
 import { tv } from 'tailwind-variants'
+
+import { cn } from '@/app/lib/utils'
 
 const button = tv({
   base: [
@@ -20,17 +21,17 @@ const button = tv({
   },
 })
 
-type ButtonProps = ComponentProps<'button'> & VariantProps<typeof button>
+type ButtonProps = ComponentProps<'button'> & {
+  variant?: 'primary' | 'secondary' | 'ghost'
+}
 
-export const Button = ({ children, ...props }: ButtonProps) => {
+export const Button = ({
+  children,
+  variant = 'primary',
+  ...props
+}: ButtonProps) => {
   return (
-    <button
-      className={button({
-        variant: props.variant,
-        className: props.className,
-      })}
-      {...props}
-    >
+    <button {...props} className={cn(button({ variant }), props.className)}>
       {children}
     </button>
   )

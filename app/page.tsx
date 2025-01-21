@@ -1,15 +1,14 @@
-import { Hero } from "./components/landing-page/hero";
+import Hero from './components/landing-page/hero'
 
 export default function Home() {
   return (
-    <div className="max-w-7xl mx-auto border px-8">
-      <Hero/>
+    <div className="max-w-7xl mx-auto">
+      <Hero />
       {/* <Header/>
       <Hero/>
       <VideoExplanation/>
       <Pricing/>
       <Faq/> */}
-     
     </div>
-  );
+  )
 }
