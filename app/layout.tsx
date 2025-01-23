@@ -10,7 +10,7 @@ const redHatDisplay = redHatDisplayFont({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Project In Bio"',
+    template: '%s | Project in Bio"',
     default: 'Project in Bio',
   },
 }
