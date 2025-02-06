@@ -1,23 +1,28 @@
 'use client'
 
 import { ArrowUpFromLine, Plus } from 'lucide-react'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import React, { startTransition, useState } from 'react'
 
+import { createProject } from '@/app/actions/create-project'
 import { Button } from '@/app/components/ui/button'
 import Modal from '@/app/components/ui/modal'
 import { TextInput } from '@/app/components/ui/text-input'
 import { Textarea } from '@/app/components/ui/textarea'
+import { compressFiles } from '@/app/lib/utils'
 
 interface NewProjectProps {
   profileId: string
 }
 
 export default function NewProject({ profileId }: NewProjectProps) {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [projectName, setProjectName] = useState('')
   const [projectUrl, setProjectUrl] = useState('')
   const [projectDescription, setProjectDescription] = useState('')
   const [projectImage, setProjectImage] = useState<string | null>(null)
+  const [isCreatingProject, setIsCreatingProject] = useState(false)
 
   function handleOpenModal() {
     setIsOpen(!isOpen)
@@ -49,7 +54,36 @@ export default function NewProject({ profileId }: NewProjectProps) {
     }
   }
 
-  function handleSaveProject() {}
+  async function handleSaveProject() {
+    setIsCreatingProject(true)
+
+    const imagesInput = document.getElementById(
+      'imageInput',
+    ) as HTMLInputElement
+
+    if (!imagesInput.files) return
+
+    const compressedImage = await compressFiles(Array.from(imagesInput.files))
+
+    const formData = new FormData()
+    formData.append('file', compressedImage[0])
+    formData.append('profileId', profileId)
+    formData.append('projectName', projectName)
+    formData.append('projectUrl', projectUrl)
+    formData.append('projectDescription', projectDescription)
+
+    await createProject(formData)
+
+    startTransition(() => {
+      setIsOpen(false)
+      setIsCreatingProject(false)
+      setProjectName('')
+      setProjectDescription('')
+      setProjectUrl('')
+      setProjectImage(null)
+      router.refresh()
+    })
+  }
 
   return (
     <div>
@@ -136,7 +170,9 @@ export default function NewProject({ profileId }: NewProjectProps) {
             <button onClick={handleOpenModal} className="font-bold text-white">
               Voltar
             </button>
-            <Button onClick={handleSaveProject}>Salvar</Button>
+            <Button disabled={isCreatingProject} onClick={handleSaveProject}>
+              Salvar
+            </Button>
           </div>
         </div>
       </Modal>

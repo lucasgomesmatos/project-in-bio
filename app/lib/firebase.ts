@@ -1,10 +1,9 @@
-import 'server-only'
-
 import { cert, getApps, initializeApp } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
 import { getStorage } from 'firebase-admin/storage'
 
 // Certifcado
+
 const decodedKey = Buffer.from(
   process.env.FIREBASE_PRIVATE_KEY_BASE64!,
   'base64',
@@ -15,6 +14,7 @@ export const firebaseCert = cert({
   clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
   privateKey: decodedKey,
 })
+
 // Instancia do app
 if (!getApps().length) {
   initializeApp({
@@ -22,5 +22,20 @@ if (!getApps().length) {
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   })
 }
+
 export const db = getFirestore()
-export const storage = getStorage()
+
+export const storage = getStorage().bucket()
+
+export async function getDownloadURLFromPath(path?: string) {
+  if (!path) return
+
+  const file = storage.file(path)
+
+  const [url] = await file.getSignedUrl({
+    action: 'read',
+    expires: '03-01-2500', // Não deixa expirar
+  })
+
+  return url
+}
