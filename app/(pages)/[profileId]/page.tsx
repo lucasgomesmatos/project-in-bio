@@ -7,6 +7,7 @@ import { UserCard } from '@/app/components/commons/user-card'
 import { auth } from '@/app/lib/auth'
 import { getProfileData } from '@/app/server/get-profile-data'
 
+import { getProjectsData } from '@/app/server/get-projects-data'
 import NewProject from './new-project'
 
 export default async function ProfilePage({
@@ -22,6 +23,7 @@ export default async function ProfilePage({
   }
 
   // TODO: get projects data
+  const projects = await getProjectsData(profileId)
 
   const session = await auth()
   const isOwner = profileData.userId === session?.user?.id
@@ -44,13 +46,18 @@ export default async function ProfilePage({
         <UserCard />
       </div>
       <div className="w-full flex justify-center content-start gap-4 flex-wrap overflow-y-auto">
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
+        {
+          projects.map((project) => () => (
+            <ProjectCard
+              key={project.id}
+              projectName={project.projectName}
+              projectDescription={project.projectDescription}
+              projectUrl={project.projectUrl}
+              imagePath={project.imagePath}
+            />
+          ))
+        }
+        x
         {isOwner && <NewProject profileId={profileId} />}
       </div>
       <div className="absolute bottom-4 right-0 left-0 w-min mx-auto">
