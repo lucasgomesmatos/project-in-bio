@@ -12,6 +12,10 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project, isOwner, img }: ProjectCardProps) {
 
+  if(project === undefined) {
+    return null;
+  }
+
   const projectUrl = project.projectUrl;
   const formattedUrl = projectUrl.startsWith("http")
     ? projectUrl

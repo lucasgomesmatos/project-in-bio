@@ -1,5 +1,5 @@
 import { TotalVisits } from '@/app/components/commons/total-visits'
-import { UserCard } from '@/app/components/commons/user-card'
+
 import { auth } from '@/app/lib/auth'
 import { getProfileData } from '@/app/server/get-profile-data'
 import Link from 'next/link'
@@ -11,6 +11,7 @@ const ProjectCard = dynamic(() => import('@/app/components/commons/project-card'
 
 import { getDownloadURLFromPath } from '@/app/lib/firebase'
 
+import { UserCard } from '@/app/components/commons/user-card/user-card'
 import { getProfileProjects } from '@/app/server/get-projects-data'
 import dynamic from 'next/dynamic'
 import NewProject from './new-project'
