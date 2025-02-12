@@ -1,11 +1,36 @@
-import { Github, Instagram, Linkedin, Plus, Twitter } from 'lucide-react'
-import { Button } from '../../ui/button'
-import EditSocialLinks from './edit-social-links'
+import { ProfileData } from '@/app/server/get-profile-data';
+import { Github, Instagram, Linkedin, Plus, Twitter } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '../../ui/button';
+import EditSocialLinks from './edit-social-links';
 
+interface UserCardProps {
+  profileData: ProfileData;
+}
 
+export const UserCard = ({ profileData }: UserCardProps) => {
+  // const icons = [Github, Instagram, Linkedin, Twitter];
 
-export const UserCard = () => {
-  const icons = [Github, Instagram, Linkedin, Twitter]
+  const socialMedias = profileData?.socialMedias;
+
+  const icons = [
+    {
+      Icon: Github,
+      url: socialMedias.github,
+    },
+    {
+      Icon: Instagram,
+      url: socialMedias.instagram,
+    },
+    {
+      Icon: Linkedin,
+      url: socialMedias.linkedin,
+    },
+    {
+      Icon: Twitter,
+      url: socialMedias.twitter,
+    },
+  ];
 
   return (
     <div className="w-[348px] flex flex-col gap-5 items-center p-5 border border-white border-opacity-10 bg-[#121212] rounded-3xl text-white">
@@ -27,15 +52,17 @@ export const UserCard = () => {
       <div className="flex flex-col gap-2 w-full">
         <span className="uppercase text-xs font-medium">Links</span>
         <div className="flex gap-3">
-          {icons.map((Icon) => (
-            <button
-              key={Icon.displayName}
+          {icons.map(({ Icon, url }, index) => (
+            <Link
+              key={`${index}-${url}`}
+              href={url}
+              target="_blank"
               className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]"
             >
               <Icon />
-            </button>
+            </Link>
           ))}
-           <EditSocialLinks />
+          <EditSocialLinks socialMedias={socialMedias} />
         </div>
       </div>
       <div className="flex flex-col gap-3 w-full h-[172px]">
@@ -47,5 +74,5 @@ export const UserCard = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

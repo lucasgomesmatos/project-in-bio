@@ -2,10 +2,19 @@ import 'server-only'
 
 import { db } from '../lib/firebase'
 
-interface ProfileData {
+export interface SocialMedias {
+  github: string
+  linkedin: string
+  twitter: string
+  instagram: string
+}
+
+export interface ProfileData {
   userId: string
   totalVisits: number
   createAt: number
+  socialMedias: SocialMedias
+  updatedAt?: number
 }
 
 export async function getProfileData(profileId: string): Promise<ProfileData> {
