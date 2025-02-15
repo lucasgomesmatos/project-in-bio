@@ -1,7 +1,9 @@
+import { formatUrl } from '@/app/lib/utils';
 import { ProfileData } from '@/app/server/get-profile-data';
-import { Github, Instagram, Linkedin, Plus, Twitter } from 'lucide-react';
+import { Github, Instagram, Linkedin, Twitter } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../../ui/button';
+import AddCustomLink from './add-custom-link';
 import EditSocialLinks from './edit-social-links';
 
 interface UserCardProps {
@@ -16,19 +18,38 @@ export const UserCard = ({ profileData }: UserCardProps) => {
   const icons = [
     {
       Icon: Github,
-      url: socialMedias.github,
+      url: socialMedias?.github,
     },
     {
       Icon: Instagram,
-      url: socialMedias.instagram,
+      url: socialMedias?.instagram,
     },
     {
       Icon: Linkedin,
-      url: socialMedias.linkedin,
+      url: socialMedias?.linkedin,
     },
     {
       Icon: Twitter,
-      url: socialMedias.twitter,
+      url: socialMedias?.twitter,
+    },
+  ];
+
+  const link1 = profileData?.link1;
+  const link2 = profileData?.link2;
+  const link3 = profileData?.link3;
+
+  const links = [
+    {
+      title: link1?.title,
+      url: link1?.url,
+    },
+    {
+      title: link2?.title,
+      url: link2?.url,
+    },
+    {
+      title: link3?.title,
+      url: link3?.url,
     },
   ];
 
@@ -55,8 +76,8 @@ export const UserCard = ({ profileData }: UserCardProps) => {
           {icons.map(({ Icon, url }, index) => (
             <Link
               key={`${index}-${url}`}
-              href={url}
-              target="_blank"
+              href={url || '#'}
+              target={url ? '_blank' : '_self'}
               className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]"
             >
               <Icon />
@@ -65,14 +86,26 @@ export const UserCard = ({ profileData }: UserCardProps) => {
           <EditSocialLinks socialMedias={socialMedias} />
         </div>
       </div>
-      <div className="flex flex-col gap-3 w-full h-[172px]">
-        <div className="w-full flex flex-col items-center gap-3">
-          <Button className="w-full">Template SaaS - Compre Agora</Button>
-          <button className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]">
-            <Plus />
-          </button>
+      {Boolean(links) && (
+        <div className="flex flex-col gap-3 w-full h-[172px]">
+          <div className="w-full flex flex-col items-center gap-3">
+            {links
+              .filter((link) => link.title && link.url)
+              .map((link, index) => (
+                <Link
+                  key={`${index}-${link.url}`}
+                  href={formatUrl(link.url || '')}
+                  target="_blank"
+                  className="w-full"
+                >
+                  <Button className="w-full">{link.title}</Button>
+                </Link>
+              ))}
+          </div>
         </div>
-      </div>
+      )}
+
+      <AddCustomLink />
     </div>
   );
 };

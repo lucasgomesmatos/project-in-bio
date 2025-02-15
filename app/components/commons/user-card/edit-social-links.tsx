@@ -19,10 +19,10 @@ export default function EditSocialLinks({
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSavingSocialLinks, setIsSavingSocialLinks] = useState(false);
-  const [github, setGithub] = useState(socialMedias.github || '');
-  const [instagram, setInstagram] = useState(socialMedias.instagram || '');
-  const [linkedin, setLinkedin] = useState(socialMedias.linkedin || '');
-  const [twitter, setTwitter] = useState(socialMedias.twitter || '');
+  const [github, setGithub] = useState(socialMedias?.github || '');
+  const [instagram, setInstagram] = useState(socialMedias?.instagram || '');
+  const [linkedin, setLinkedin] = useState(socialMedias?.linkedin || '');
+  const [twitter, setTwitter] = useState(socialMedias?.twitter || '');
 
   const { profileId } = useParams();
 

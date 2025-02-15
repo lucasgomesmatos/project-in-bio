@@ -26,6 +26,7 @@ export async function compressFiles(files: File[]) {
   });
   return (await Promise.all(compressPromisses)).filter((file) => file !== null);
 }
+
 export const compressImage = (file: File): Promise<File> => {
   return new Promise((resolve, reject) => {
     const options = {
@@ -39,3 +40,8 @@ export const compressImage = (file: File): Promise<File> => {
     });
   });
 };
+
+export function formatUrl(url: string) {
+  const formattedUrl = url.startsWith("http") ? url : `https://${url}`;
+  return formattedUrl;
+}
